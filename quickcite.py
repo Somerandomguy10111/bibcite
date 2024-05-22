@@ -25,7 +25,8 @@ class Work:
                    author : Optional[str] = None) -> Work:
         response = cls._search_request(search_expression=title)
         paper_dicts = response.json()['results']
-        relevant_papers = [p for p in paper_dicts if not p['doi'] is None]
+        relevant_papers = [p for p in paper_dicts if title in p['title']]
+        relevant_papers = [p for p in relevant_papers if not p['doi'] is None]
         # print(f'Number of relevant papers = {len(relevant_papers)}')
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
@@ -34,6 +35,7 @@ class Work:
         # print(f'relevant papers = {relevant_papers}')
 
         paper_doi = relevant_papers[0]['doi']
+        print(f'Paper doi is {paper_doi}')
         crossref_item = cls.get_crossref_item(paper_doi=paper_doi)
         journal_item = crossref_item.get('container-title')
         if journal_item:
@@ -120,8 +122,9 @@ class Work:
 
 
 if __name__ == "__main__":
-    test_title = "Neural networks trained on synthetically generated crystals can extract structural information from ICSD powder X-ray diffractograms"
+    test_title = "An Introduction To Quantum Field Theory"
     introd_work = Work.from_query(title=test_title)
+    print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
 

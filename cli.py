@@ -18,8 +18,8 @@ while True:
         continue
 
     bibtex = work.to_bibtex()
-    print(f'Bibtext citation: \n {bibtex}')
+    print(f'- Found bibtext citation: \n {bibtex}')
     pyperclip.copy(bibtex)
-    print(f'Copied to clipboard!')
+    print(f'- Copied to clipboard!')
 
 
