@@ -26,12 +26,12 @@ class Work:
         response = cls._search_request(search_expression=title)
         paper_dicts = response.json()['results']
         relevant_papers = [p for p in paper_dicts if not p['doi'] is None]
-        print(f'Number of relevant papers = {len(relevant_papers)}')
+        # print(f'Number of relevant papers = {len(relevant_papers)}')
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
         if author:
             relevant_papers = [p for p in relevant_papers if author in cls.get_author(p)]
-        print(f'relevant papers = {relevant_papers}')
+        # print(f'relevant papers = {relevant_papers}')
 
         paper_doi = relevant_papers[0]['doi']
         crossref_item = cls.get_crossref_item(paper_doi=paper_doi)
