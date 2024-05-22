@@ -35,7 +35,7 @@ class Work:
         # print(f'relevant papers = {relevant_papers}')
 
         paper_doi = relevant_papers[0]['doi']
-        print(f'Paper doi is {paper_doi}')
+        # print(f'Paper doi is {paper_doi}')
         crossref_item = cls.get_crossref_item(paper_doi=paper_doi)
         journal_item = crossref_item.get('container-title')
         if journal_item:
@@ -99,6 +99,7 @@ class Work:
 
         authors = " and ".join([f"{author['given']} {author['family']}" for author in self.authors])
         first_author_lastname = self.authors[0]['family']
+        first_author_lastname = first_author_lastname.split()[-1]
 
         info_list = {
             'title': self.title,
