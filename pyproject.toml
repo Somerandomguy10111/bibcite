@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "myproj"
+version = "0.1.0"
+authors = [{name = "Daniel Hollarek", email = "daniel.hollarek@googlemail.com"}]
+readme = "readme.md"
+description = "A very good project indeed"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
