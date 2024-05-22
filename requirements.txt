@@ -1,5 +1,1 @@
-# package list goes here
-#pkg1
-#pkg2
-# holytools @ git+https://github.com/Somerandomguy10111/holytools #-> install from github via https
-# holytools @ git+ssh://git@github.com/Somerandomguy10111/holytools #-> Install from github via ssh
+requests

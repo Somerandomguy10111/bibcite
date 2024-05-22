@@ -109,7 +109,7 @@ class Work:
             'url': self.url
         }
 
-        bibtex = f"@{self.work_type}{{{first_author_lastname}{self.year},\n"
+        bibtex = f"@{bibtex_type}{{{first_author_lastname}{self.year},\n"
         for key, value in info_list.items():
             if value:
                 bibtex += f"  {key}={{{value}}},\n"
@@ -120,8 +120,8 @@ class Work:
 
 
 if __name__ == "__main__":
-    test_title = "An Introduction to Quantum Field Theory"
-    introd_work = Work.from_query(title=test_title, author='Peskin', work_type='book')
+    test_title = "Neural networks trained on synthetically generated crystals can extract structural information from ICSD powder X-ray diffractograms"
+    introd_work = Work.from_query(title=test_title)
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
 
