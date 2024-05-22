@@ -25,13 +25,24 @@ class Work:
                    author : Optional[str] = None) -> Work:
         response = cls._search_request(search_expression=title)
         paper_dicts = response.json()['results']
+
+        if len(paper_dicts) == 0:
+            raise ValueError(f"No papers found with title {title}")
+
         relevant_papers = [p for p in paper_dicts if title in p['title']]
         relevant_papers = [p for p in relevant_papers if not p['doi'] is None]
+
+        if len(relevant_papers) == 0:
+            raise ValueError(f"No works or no works with doi found with title {title}")
+
+
         # print(f'Number of relevant papers = {len(relevant_papers)}')
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
         if author:
             relevant_papers = [p for p in relevant_papers if author in cls.get_author(p)]
+        if len(relevant_papers) == 0:
+            raise ValueError(f"No papers found with title {title} and author {author}")
         # print(f'relevant papers = {relevant_papers}')
 
         paper_doi = relevant_papers[0]['doi']
@@ -77,7 +88,7 @@ class Work:
         results_per_page = 200
 
         search_params = {
-            'filter': f'default.search:{search_expression}',
+            'filter': f'title.search:{search_expression}',
             'sort': 'relevance_score:desc',
             'per_page': results_per_page,
         }
