@@ -31,22 +31,20 @@ class Work:
 
         relevant_papers = [p for p in paper_dicts if title.lower() in p['title'].lower()]
         relevant_papers = [p for p in relevant_papers if not p['doi'] is None]
+        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
 
         if len(relevant_papers) == 0:
             raise ValueError(f"No works or no works with doi found with title {title}")
 
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
-        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
         if author:
             relevant_papers = [p for p in relevant_papers if author in cls.get_author(p)]
-        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
         if len(relevant_papers) == 0:
             raise ValueError(f"No papers found with title {title} and author {author}")
-        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
 
         paper_doi = relevant_papers[0]['doi']
-        # print(f'Paper doi is {paper_doi}')
+
         crossref_item = cls.get_crossref_item(paper_doi=paper_doi)
         journal_item = crossref_item.get('container-title')
         if journal_item:
@@ -136,7 +134,7 @@ class Work:
 
 
 if __name__ == "__main__":
-    test_title = "The Rietveld refinement method: Half of a century anniversary"
+    test_title = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     introd_work = Work.from_query(title=test_title)
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
