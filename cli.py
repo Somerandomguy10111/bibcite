@@ -2,7 +2,7 @@ from quickcite import Work
 import pyperclip
 from tabulate import tabulate
 
-text = "Quickcite V1.0\n\nGenerate bibtex citations from only title"
+text = "Quickcite V0.5\n\nGenerate bibtex citations from only title"
 table = [[text]]
 
 print(tabulate(table, tablefmt="grid"))
@@ -19,7 +19,7 @@ while True:
         continue
 
     bibtex = work.to_bibtex()
-    print(f'- Found bibtext citation: \n {bibtex}')
+    print(f'- Found bibtext citation: \n{bibtex}')
     pyperclip.copy(bibtex)
     print(f'- Copied to clipboard!')
 

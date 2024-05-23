@@ -35,15 +35,15 @@ class Work:
         if len(relevant_papers) == 0:
             raise ValueError(f"No works or no works with doi found with title {title}")
 
-        # print(f'Number of relevant papers = {len(relevant_papers)}')
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
-        print(f'Relevant papers = {relevant_papers}')
+        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
         if author:
             relevant_papers = [p for p in relevant_papers if author in cls.get_author(p)]
+        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
         if len(relevant_papers) == 0:
             raise ValueError(f"No papers found with title {title} and author {author}")
-        # print(f'relevant papers = {relevant_papers}')
+        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
 
         paper_doi = relevant_papers[0]['doi']
         # print(f'Paper doi is {paper_doi}')
