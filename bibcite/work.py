@@ -43,11 +43,8 @@ class Work:
         if len(relevant_papers) == 0:
             raise ValueError(f"No papers found with title {title} and author {author}")
 
-        paper_doi = relevant_papers[0]['doi']
-
         # print(f'Crossref item = {cls.get_crossref_item(paper_doi)}')
-
-        crossref_item = cls.get_crossref_item(paper_doi=paper_doi)
+        crossref_item = cls.get_crossref_item(paper_doi=relevant_papers[0]['doi'])
         journal_item = crossref_item.get('container-title')
         if journal_item:
             journal = journal_item[0]
@@ -59,7 +56,7 @@ class Work:
         new_work = Work(title= crossref_item['title'][0],
                         authors= crossref_item['author'],
                         year=crossref_item['published']['date-parts'][0][0],
-                        doi=paper_doi,
+                        doi=crossref_item['DOI'],
                         url= crossref_item['URL'],
                         work_type= crossref_item['type'],
                         journal=journal,
@@ -141,7 +138,8 @@ if __name__ == "__main__":
     # -> t2: DOI not found in Crossref
     t1 = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     t2 = "Attention is all you need"
-    introd_work = Work.from_query(title=t1)
+    t3 = 'Supernova limits on muonic dark forces'
+    introd_work = Work.from_query(title=t3)
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
