@@ -29,16 +29,16 @@ class Work:
         if len(paper_dicts) == 0:
             raise ValueError(f"No papers found with title {title}")
 
-        relevant_papers = [p for p in paper_dicts if title in p['title']]
+        relevant_papers = [p for p in paper_dicts if title.lower() in p['title'].lower()]
         relevant_papers = [p for p in relevant_papers if not p['doi'] is None]
 
         if len(relevant_papers) == 0:
             raise ValueError(f"No works or no works with doi found with title {title}")
 
-
         # print(f'Number of relevant papers = {len(relevant_papers)}')
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
+        print(f'Relevant papers = {relevant_papers}')
         if author:
             relevant_papers = [p for p in relevant_papers if author in cls.get_author(p)]
         if len(relevant_papers) == 0:
@@ -134,7 +134,7 @@ class Work:
 
 
 if __name__ == "__main__":
-    test_title = "An Introduction To Quantum Field Theory"
+    test_title = "The Rietveld refinement method: Half of a century anniversary"
     introd_work = Work.from_query(title=test_title)
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
