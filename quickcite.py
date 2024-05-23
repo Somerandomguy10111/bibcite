@@ -54,10 +54,12 @@ class Work:
         else:
             journal = None
 
+        print(f'Found crossref item = {crossref_item}')
+
         new_work = Work(title= crossref_item['title'][0],
                         authors= crossref_item['author'],
                         year=crossref_item['published']['date-parts'][0][0],
-                        doi= crossref_item['DOI'],
+                        doi=paper_doi,
                         url= crossref_item['URL'],
                         work_type= crossref_item['type'],
                         journal=journal,
@@ -134,7 +136,7 @@ class Work:
 
 
 if __name__ == "__main__":
-    test_title = "The Rietveld refinement method: Half of a century anniversary"
+    test_title = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     introd_work = Work.from_query(title=test_title)
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')

@@ -1,0 +1,10 @@
+[project]
+name = "bibcite"
+version = "0.1.0"
+authors = [{name = "Daniel Hollarek", email = "daniel.hollarek@googlemail.com"}]
+readme = "readme.md"
+description = "Generate bibtex citations from command line and instantly copies them to clipboard"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
