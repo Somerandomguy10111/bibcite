@@ -8,7 +8,7 @@ def main():
     parser.add_argument('title', type=str, help='The title of the work to generate a BibTeX citation for.')
     args = parser.parse_args()
 
-    text = "Bibcite V0.5: Bibtex citations from the command line\n"
+    text = "Bibcite: Bibtex citations from the command line\n"
     table = [[text]]
     print(tabulate(table, tablefmt="grid"))
 

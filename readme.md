@@ -7,6 +7,7 @@ optionally be filtered by the author.
 ## Usage
 ```bash
 pip install bibcite
+bibcite "ImageNet Classification with Deep Convolutional Neural Networks"
 ```
 
 [//]: # (## Usage)
