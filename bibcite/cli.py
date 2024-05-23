@@ -1,14 +1,14 @@
 import argparse
 import pyperclip
 from tabulate import tabulate
-from work import Work
+from bibcite.work import Work
 
 def main():
     parser = argparse.ArgumentParser(description='Generate BibTeX citations from a title.')
     parser.add_argument('title', type=str, help='The title of the work to generate a BibTeX citation for.')
     args = parser.parse_args()
 
-    text = "Quickcite V0.5\nGenerate bibtex citations from only title"
+    text = "Bibcite V0.5: Bibtex citations from the command line\n"
     table = [[text]]
     print(tabulate(table, tablefmt="grid"))
 

@@ -8,3 +8,6 @@ dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+
+[project.scripts]
+bibcite = "bibcite.cli:main"
