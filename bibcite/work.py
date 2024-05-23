@@ -45,6 +45,8 @@ class Work:
 
         paper_doi = relevant_papers[0]['doi']
 
+        # print(f'Crossref item = {cls.get_crossref_item(paper_doi)}')
+
         crossref_item = cls.get_crossref_item(paper_doi=paper_doi)
         journal_item = crossref_item.get('container-title')
         if journal_item:
@@ -134,8 +136,12 @@ class Work:
 
 
 if __name__ == "__main__":
-    test_title = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
-    introd_work = Work.from_query(title=test_title)
+    # Error titles: Titles for which currently no citation can be generated
+    # -> t1: Missing author
+    # -> t2: DOI not found in Crossref
+    t1 = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
+    t2 = "Attention is all you need"
+    introd_work = Work.from_query(title=t1)
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
