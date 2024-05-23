@@ -1,4 +1,4 @@
-from quickcite import Work
+from work import Work
 import pyperclip
 from tabulate import tabulate
 
