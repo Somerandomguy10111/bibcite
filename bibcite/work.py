@@ -23,13 +23,19 @@ class Work:
     def from_query(cls, title : str,
                    work_type : Optional[str] = None,
                    author : Optional[str] = None) -> Work:
-        response = cls._search_request(search_expression=title)
+        response = cls._search_request(title=title, author=author)
         paper_dicts = response.json()['results']
 
         if len(paper_dicts) == 0:
             raise ValueError(f"No papers found with title {title}")
 
-        relevant_papers = [p for p in paper_dicts if title.lower() in p['title'].lower()]
+        def paper_title_matchs(p : dict) -> bool:
+            try:
+                return title.lower() in p['title'].lower()
+            except:
+                return False
+
+        relevant_papers = [p for p in paper_dicts if paper_title_matchs(p)]
         relevant_papers = [p for p in relevant_papers if not p['doi'] is None]
         # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
 
@@ -50,8 +56,6 @@ class Work:
             journal = journal_item[0]
         else:
             journal = None
-
-        # print(f'Found crossref item = {crossref_item}')
 
         new_work = Work(title= crossref_item['title'][0],
                         authors= crossref_item['author'],
@@ -82,17 +86,31 @@ class Work:
         return data['message']
 
     @staticmethod
-    def _search_request(search_expression : str) -> Response:
+    def _search_request(title: str, author: str = None) -> Response:
+        author_url = 'https://api.openalex.org/authors'
+        conditional_author_filter = ''
+        if author:
+            author_search_params = {
+                'filter': f'display_name.search:{author}',
+                'per_page': 1
+            }
+            author_response = requests.get(author_url, params=author_search_params)
+            author_data = author_response.json()
+            author_id = author_data['results'][0]['id']
+            conditional_author_filter = f',authorships.author.id:{author_id}'
+
         works_url = 'https://api.openalex.org/works'
         results_per_page = 200
 
+        title_filter = f'default.search:{title}'
+
         search_params = {
-            'filter': f'title.search:{search_expression}',
+            'filter': f'{title_filter}{conditional_author_filter}',
             'sort': 'relevance_score:desc',
             'per_page': results_per_page,
         }
-        response = requests.get(works_url, params=search_params)
 
+        response = requests.get(works_url, params=search_params)
         return response
 
     # ---------------------------------------------------------
@@ -138,10 +156,10 @@ if __name__ == "__main__":
     # -> t2: DOI not found in Crossref
     t1 = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     t2 = "Attention is all you need"
-    t3 = 'Supernova limits on muonic dark forces'
-    introd_work = Work.from_query(title=t3)
+    t3 = 'Unveiling hidden physics at the LHC'
+    introd_work = Work.from_query(title=t3, author='Oliver Fischer')
     print(f'Paper doi is {introd_work.doi}')
-    print(f'Intro work bibtext = \n{introd_work.to_bibtex()}')
+    print(f'Intro work bibtext: \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
 
 
