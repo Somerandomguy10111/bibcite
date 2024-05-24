@@ -1,6 +1,6 @@
 [project]
 name = "bibcite"
-version = "0.2.2"
+version = "0.2.3"
 authors = [{name = "Daniel Hollarek", email = "daniel.hollarek@googlemail.com"}]
 readme = "readme.md"
 description = "Generate bibtex citations from command line and instantly copies them to clipboard"
