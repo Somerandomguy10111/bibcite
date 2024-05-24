@@ -44,8 +44,6 @@ class Work:
 
         if work_type:
             relevant_papers = [p for p in relevant_papers if p['type'] == work_type]
-        if author:
-            relevant_papers = [p for p in relevant_papers if author in cls.get_author(p)]
         if len(relevant_papers) == 0:
             raise ValueError(f"No papers found with title {title} and author {author}")
 
@@ -68,13 +66,6 @@ class Work:
                         volume= crossref_item.get('volume'))
         return new_work
 
-    @staticmethod
-    def get_author(paper_dict : dict):
-        try:
-            author_name = paper_dict['authorships'][0]['raw_author_name']
-        except:
-            author_name = ''
-        return author_name
 
     @staticmethod
     def get_crossref_item(paper_doi : str) -> dict:
@@ -96,7 +87,10 @@ class Work:
             }
             author_response = requests.get(author_url, params=author_search_params)
             author_data = author_response.json()
-            author_id = author_data['results'][0]['id']
+            # print(f'Author data results = {author_data["results"]}')
+            author_openalex_url = author_data['results'][0]['id']
+            author_id = author_openalex_url.split('/')[-1]
+            # print(f'Author id = {author_id}')
             conditional_author_filter = f',authorships.author.id:{author_id}'
 
         works_url = 'https://api.openalex.org/works'
@@ -156,10 +150,8 @@ if __name__ == "__main__":
     # -> t2: DOI not found in Crossref
     t1 = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     t2 = "Attention is all you need"
-    t3 = 'Unveiling hidden physics at the LHC'
-    introd_work = Work.from_query(title=t3, author='Oliver Fischer')
+    t3 = 'Supernova limits on muonic dark forces'
+    introd_work = Work.from_query(title=t3, author='Jonas Spinner')
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext: \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
-
-
