@@ -150,7 +150,7 @@ if __name__ == "__main__":
     # -> t2: DOI not found in Crossref
     t1 = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     t2 = "Attention is all you need"
-    t3 = 'Supernova limits on muonic dark forces'
+    t3 = 'Supernova'
     introd_work = Work.from_query(title=t3, author='Jonas Spinner')
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext: \n{introd_work.to_bibtex()}')
