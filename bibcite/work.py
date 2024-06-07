@@ -4,6 +4,7 @@ from typing import Optional
 
 import requests
 from requests import Response
+from fuzzywuzzy import fuzz
 
 # ---------------------------------------------------------
 
@@ -29,15 +30,20 @@ class Work:
         if len(paper_dicts) == 0:
             raise ValueError(f"No papers found with title {title}")
 
-        def paper_title_matchs(p : dict) -> bool:
+        def paper_title_matches(p: dict) -> bool:
+            # print(f'Title: {p["title"].lower()}, doi = {p["doi"]}')
+            # print(f'Title len = {len(p["title"])}')
+
             try:
-                return title.lower() in p['title'].lower()
-            except:
+                match_score = fuzz.ratio(title.lower(), p['title'].lower())
+                # print(f'Match score: {match_score}')
+                return match_score > 95
+            except Exception as e:
+                print(f'Error: {e}')
                 return False
 
-        relevant_papers = [p for p in paper_dicts if paper_title_matchs(p)]
+        relevant_papers = [p for p in paper_dicts if paper_title_matches(p)]
         relevant_papers = [p for p in relevant_papers if not p['doi'] is None]
-        # print(f'Relevant paper titles = {[p["title"] for p in relevant_papers]}')
 
         if len(relevant_papers) == 0:
             raise ValueError(f"No works or no works with doi found with title {title}")
@@ -116,6 +122,8 @@ class Work:
             bibtex_type = 'book'
         elif self.work_type == 'proceedings-article':
             bibtex_type = 'inproceedings'
+        elif self.work_type == 'monograph':
+            bibtex_type = 'book'
         else:
             raise ValueError(f"Unsupported entry type: {self.work_type}")
 
@@ -151,7 +159,8 @@ if __name__ == "__main__":
     t1 = "Fundamentals of Powder Diffraction and Structural Characterization of Materials"
     t2 = "Attention is all you need"
     t3 = 'Supernova'
-    introd_work = Work.from_query(title=t3, author='Jonas Spinner')
+    t4, a4 = 'Elements of Modern X-ray Physics', 'J. Als-Nielsen'
+    introd_work = Work.from_query(title=t4, author=a4)
     print(f'Paper doi is {introd_work.doi}')
     print(f'Intro work bibtext: \n{introd_work.to_bibtex()}')
     # print(Work.get_crossref_item(paper_doi='10.1063/1.2807734'))
