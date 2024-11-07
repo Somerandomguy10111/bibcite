@@ -39,7 +39,6 @@ class Work:
                 # print(f'Match score: {match_score}')
                 return match_score > 95
             except Exception as e:
-                print(f'Error: {e}')
                 return False
 
         relevant_papers = [p for p in paper_dicts if paper_title_matches(p)]

@@ -4,10 +4,11 @@ version = "0.2.4"
 authors = [{name = "Daniel Hollarek", email = "daniel.hollarek@googlemail.com"}]
 readme = "readme.md"
 description = "Generates bibtex citations from command line and instantly copies them to clipboard"
-dynamic = ["dependencies"]
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+dependencies = [
+    "requests",
+    "pyperclip",
+    "tabulate"
+]
 
 [project.scripts]
 bibcite = "bibcite.cli:main"
